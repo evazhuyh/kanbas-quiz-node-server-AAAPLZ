@@ -1,6 +1,21 @@
 let todos = [ { id: 1, title: "Task 1", completed: false },  { id: 2, title: "Task 2", completed: true },
               { id: 3, title: "Task 3", completed: false },  { id: 4, title: "Task 4", completed: true }, ];
 export default function WorkingWithArrays(app) {
+  app.get("/lab5/todos/create", (req, res) => {
+    const newTodo = {
+      id: new Date().getTime(),
+      title: "New Task",
+      completed: false,
+    };
+    todos.push(newTodo);
+    res.json(todos);
+  });
+  app.get("/lab5/todos/:id/delete", (req, res) => {
+    const { id } = req.params;
+    const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+    todos.splice(todoIndex, 1);
+    res.json(todos);
+  });
   app.get("/lab5/todos", (req, res) => {
     const { completed } = req.query;
     if (completed !== undefined) {
@@ -10,15 +25,6 @@ export default function WorkingWithArrays(app) {
       res.json(completedTodos);
       return;
     }
-    res.json(todos);
-  });
-  app.get("/lab5/todos/create", (req, res) => {
-    const newTodo = {
-      id: new Date().getTime(),
-      title: "New Task",
-      completed: false,
-    };
-    todos.push(newTodo);
     res.json(todos);
   });
   app.get("/lab5/todos/:id", (req, res) => {

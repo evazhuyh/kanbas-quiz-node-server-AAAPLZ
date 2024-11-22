@@ -38,5 +38,20 @@ export default function WorkingWithArrays(app) {
     todo.title = title;
     res.json(todos);
   });
-
+  app.get("/lab5/todos/:id/description/:description", (req, res) => {
+    const { id, description } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    if (todo) {
+      todo.description = description;
+    }
+    res.json(todos);
+  });
+  app.get("/lab5/todos/:id/completed/:completed", (req, res) => {
+    const { id, completed } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    if (todo) {
+      todo.completed = completed === "true";
+    }
+    res.json(todos);
+  });
 };

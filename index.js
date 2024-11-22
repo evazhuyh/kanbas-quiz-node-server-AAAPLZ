@@ -1,6 +1,9 @@
-import express from 'express';
-import Hello from "./Hello.js"
-const express = require('express');
+import express from "express";
+import HelloRoutes from "./Hello.js";
+import Lab5 from "./Lab5/index.js";
 const app = express();
-Hello(app);
+
+HelloRoutes(app);
+Lab5(app);
+
 app.listen(4000);

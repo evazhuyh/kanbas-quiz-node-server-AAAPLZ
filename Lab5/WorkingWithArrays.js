@@ -54,4 +54,12 @@ export default function WorkingWithArrays(app) {
     }
     res.json(todos);
   });
+
+  //a5 3.6.1
+  app.post("/lab5/todos", (req, res) => {
+    const newTodo = { ...req.body,  id: new Date().getTime() };
+    todos.push(newTodo);
+    res.json(newTodo);
+  });
+
 };

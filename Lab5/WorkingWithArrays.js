@@ -55,11 +55,16 @@ export default function WorkingWithArrays(app) {
     res.json(todos);
   });
 
-  //a5 3.6.1
+  //a5 3.6
   app.post("/lab5/todos", (req, res) => {
     const newTodo = { ...req.body,  id: new Date().getTime() };
     todos.push(newTodo);
     res.json(newTodo);
   });
-
+  app.delete("/lab5/todos/:id", (req, res) => {
+    const { id } = req.params;
+    const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+    todos.splice(todoIndex, 1);
+    res.sendStatus(200);
+  });
 };

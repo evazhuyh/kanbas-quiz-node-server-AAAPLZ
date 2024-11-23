@@ -6,3 +6,5 @@ export default function Hello(app) {
     res.send('Welcome to Full Stack Development!')
   });
 }
+
+//type "nodemon index.js" in the terminal

@@ -6,6 +6,7 @@ import "dotenv/config";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
+import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 
 const app = express();
 app.use(
@@ -32,7 +33,7 @@ app.use(express.json());
 UserRoutes(app);
 ModuleRoutes(app);
 CourseRoutes(app);
-//AssignmentRoutes(app);
+AssignmentRoutes(app);
 
 Lab5(app);
 const port = process.env.PORT || 4000;

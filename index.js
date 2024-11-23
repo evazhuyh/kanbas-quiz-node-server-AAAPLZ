@@ -5,6 +5,7 @@ import session from "express-session";
 import "dotenv/config";
 import UserRoutes from "./Kanbas/Users/routes.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
+import ModuleRoutes from "./Kanbas/Modules/routes.js";
 
 const app = express();
 app.use(
@@ -29,7 +30,7 @@ if (process.env.NODE_ENV !== "development") {
 app.use(session(sessionOptions));  
 app.use(express.json());
 UserRoutes(app);
-//ModuleRoutes(app);
+ModuleRoutes(app);
 CourseRoutes(app);
 //AssignmentRoutes(app);
 

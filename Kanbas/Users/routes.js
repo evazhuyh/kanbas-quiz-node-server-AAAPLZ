@@ -4,7 +4,12 @@ import * as enrollmentsDao from "../Enrollments/dao.js";
 
 export default function UserRoutes(app) {
   const createUser = (req, res) => { };
-  const deleteUser = (req, res) => { };
+  
+  const deleteUser = async (req, res) => {
+    const status = await dao.deleteUser(req.params.userId);
+    res.json(status);
+  };
+  app.delete("/api/users/:userId", deleteUser);
 
   const findAllUsers = async (req, res) => {
     const { role, name } = req.query;
@@ -104,5 +109,4 @@ export default function UserRoutes(app) {
   app.post("/api/users/current/courses", createCourse);
 
   app.post("/api/users", createUser);
-  app.delete("/api/users/:userId", deleteUser);
 }

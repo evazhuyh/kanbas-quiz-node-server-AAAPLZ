@@ -43,6 +43,31 @@ CourseRoutes(app);
 AssignmentRoutes(app);
 EnrollmentRoutes(app);
 
+// 在 MongoDB 连接部分添加详细日志
+mongoose.connect(CONNECTION_STRING)
+  .then(() => {
+    console.log("MongoDB Connection String:", CONNECTION_STRING);
+    console.log("Successfully connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("MongoDB Connection Error:", err);
+  });
+
+// 添加请求日志中间件 (在 cors 和 session 配置之后)
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+  console.log("Request Headers:", req.headers);
+  console.log("Session:", req.session);
+  next();
+});
+
+// 在路由处理中添加错误处理
+app.use((err, req, res, next) => {
+  console.error("Error occurred:", err);
+  console.error("Stack trace:", err.stack);
+  res.status(500).json({ message: "Internal server error", error: err.message });
+});
+
 Hello(app);
 Lab5(app);
 app.listen(port);

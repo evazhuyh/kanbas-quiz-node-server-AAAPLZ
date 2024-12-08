@@ -17,6 +17,5 @@ export function createModule(module) {
 }
 
 export function findModulesForCourse(courseId) {
-  const { modules } = Database;
-  return modules.filter((module) => module.course === courseId);
+  return model.find({ course: courseId });
 }

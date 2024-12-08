@@ -44,7 +44,7 @@ AssignmentRoutes(app);
 EnrollmentRoutes(app);
 
 // 在 MongoDB 连接部分添加详细日志
-mongoose.connect(CONNECTION_STRING)
+/*mongoose.connect(CONNECTION_STRING)
   .then(() => {
     console.log("MongoDB Connection String:", CONNECTION_STRING);
     console.log("Successfully connected to MongoDB");
@@ -66,7 +66,7 @@ app.use((err, req, res, next) => {
   console.error("Error occurred:", err);
   console.error("Stack trace:", err.stack);
   res.status(500).json({ message: "Internal server error", error: err.message });
-});
+});*/
 
 Hello(app);
 Lab5(app);

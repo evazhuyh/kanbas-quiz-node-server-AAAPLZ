@@ -1,8 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
-import Hello from "./Hello.js";
-import Lab5 from "./Lab5/index.js";
 import cors from "cors";
 import session from "express-session";
 import "dotenv/config";
@@ -44,7 +42,7 @@ AssignmentRoutes(app);
 EnrollmentRoutes(app);
 
 // 在 MongoDB 连接部分添加详细日志
-/*mongoose.connect(CONNECTION_STRING)
+mongoose.connect(CONNECTION_STRING)
   .then(() => {
     console.log("MongoDB Connection String:", CONNECTION_STRING);
     console.log("Successfully connected to MongoDB");
@@ -66,8 +64,6 @@ app.use((err, req, res, next) => {
   console.error("Error occurred:", err);
   console.error("Stack trace:", err.stack);
   res.status(500).json({ message: "Internal server error", error: err.message });
-});*/
+});
 
-Hello(app);
-Lab5(app);
 app.listen(port);

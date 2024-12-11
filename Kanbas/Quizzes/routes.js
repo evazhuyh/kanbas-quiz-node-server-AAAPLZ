@@ -39,6 +39,12 @@ function QuizRoutes(app) {
   // 获取单个测验详情
   app.get("/api/quizzes/:quizId", handleErrors(async (req, res) => {
     const { quizId } = req.params;
+    
+    // 添加ID验证
+    if (!quizId) {
+      return res.status(400).json({ error: "Quiz ID is required" });
+    }
+    
     const quiz = await quizzesDao.findQuizById(quizId);
     if (!quiz) {
       return res.status(404).json({ error: "Quiz not found" });

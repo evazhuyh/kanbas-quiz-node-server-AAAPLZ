@@ -11,6 +11,10 @@ export async function findQuizzesForCourse(courseId) {
 }
 
 export async function findQuizById(quizId) {
+  // 添加ID验证
+  if (!quizId) {
+    throw new Error("Quiz ID is required");
+  }
   return model.findById(quizId);
 }
 

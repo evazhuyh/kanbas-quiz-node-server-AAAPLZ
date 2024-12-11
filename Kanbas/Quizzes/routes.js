@@ -79,7 +79,7 @@ function QuizRoutes(app) {
     res.json(updatedQuiz);
   }));
 
-  /*app.post("/api/quizzes/:quizId/questions", checkFaculty, handleErrors(async (req, res) => {
+  app.post("/api/quizzes/:quizId/questions", checkFaculty, handleErrors(async (req, res) => {
     const { quizId } = req.params;
     const updatedQuiz = await quizzesDao.addQuestionToQuiz(quizId, req.body);
     res.json(updatedQuiz);
@@ -108,7 +108,7 @@ function QuizRoutes(app) {
     const { questionIds } = req.body;
     const updatedQuiz = await quizzesDao.reorderQuizQuestions(quizId, questionIds);
     res.json(updatedQuiz);
-  }));*/
+  }));
 
   // 提交测验尝试
   app.post("/api/quizzes/:quizId/attempts", handleErrors(async (req, res) => {

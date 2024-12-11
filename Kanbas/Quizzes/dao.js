@@ -110,7 +110,7 @@ export async function togglePublishStatus(quizId) {
 }
 
 //quiz questions
-/*export async function addQuestionToQuiz(quizId, question) {
+export async function addQuestionToQuiz(quizId, question) {
   return model.findByIdAndUpdate(
     quizId,
     { $push: { questions: question } },
@@ -159,4 +159,3 @@ export async function reorderQuizQuestions(quizId, questionIds) {
   quiz.questions = reorderedQuestions;
   return quiz.save();
 }
-*/

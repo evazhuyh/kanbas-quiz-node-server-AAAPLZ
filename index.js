@@ -9,6 +9,7 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import EnrollmentRoutes from "./Kanbas/Enrollments/routes.js";
+import QuizRoutes from "./Kanbas/Quizzes/routes.js";
 const port = process.env.PORT || 4000;
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb+srv://yihuazhu:kanbasmongo@kanbas.jxbei.mongodb.net/kanbas"
 mongoose.connect(CONNECTION_STRING);
@@ -40,6 +41,7 @@ ModuleRoutes(app);
 CourseRoutes(app);
 AssignmentRoutes(app);
 EnrollmentRoutes(app);
+QuizRoutes(app);
 
 // 在 MongoDB 连接部分添加详细日志
 mongoose.connect(CONNECTION_STRING)

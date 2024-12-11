@@ -1,57 +1,106 @@
 import * as quizzesDao from "./dao.js";
 
-export default function QuizRoutes(app) {
+function QuizRoutes(app) {
   const checkFaculty = (req, res, next) => {
     if (req.session.role !== "FACULTY") {
-      return res.status(403).send("Faculty access required");
+      return res.status(403).json({ 
+        error: "Faculty access required" 
+      });
     }
     next();
   };
 
-  app.post("/api/courses/:courseId/quizzes", checkFaculty, async (req, res) => {
+  const handleErrors = (fn) => async (req, res) => {
+    try {
+      await fn(req, res);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ 
+        error: error.message || "Internal server error" 
+      });
+    }
+  };
+
+  // 创建新测验
+  app.post("/api/courses/:courseId/quizzes", checkFaculty, handleErrors(async (req, res) => {
     const { courseId } = req.params;
     const quiz = { ...req.body, course: courseId };
     const newQuiz = await quizzesDao.createQuiz(quiz);
     res.json(newQuiz);
-  });
+  }));
 
-  app.get("/api/courses/:courseId/quizzes", async (req, res) => {
+  // 获取课程的所有测验
+  app.get("/api/courses/:courseId/quizzes", handleErrors(async (req, res) => {
     const { courseId } = req.params;
     const quizzes = await quizzesDao.findQuizzesForCourse(courseId);
     res.json(quizzes);
-  });
+  }));
 
-  app.get("/api/quizzes/:quizId", async (req, res) => {
+  // 获取单个测验详情
+  app.get("/api/quizzes/:quizId", handleErrors(async (req, res) => {
     const { quizId } = req.params;
     const quiz = await quizzesDao.findQuizById(quizId);
+    if (!quiz) {
+      return res.status(404).json({ error: "Quiz not found" });
+    }
     res.json(quiz);
-  });
+  }));
 
-  app.put("/api/quizzes/:quizId", checkFaculty, async (req, res) => {
+  // 更新测验
+  app.put("/api/quizzes/:quizId", checkFaculty, handleErrors(async (req, res) => {
     const { quizId } = req.params;
-    const status = await quizzesDao.updateQuiz(quizId, req.body);
-    res.json(status);
-  });
+    const updatedQuiz = await quizzesDao.updateQuiz(quizId, req.body);
+    if (!updatedQuiz) {
+      return res.status(404).json({ error: "Quiz not found" });
+    }
+    res.json(updatedQuiz);
+  }));
 
-  app.delete("/api/quizzes/:quizId", checkFaculty, async (req, res) => {
+  // 删除测验
+  app.delete("/api/quizzes/:quizId", checkFaculty, handleErrors(async (req, res) => {
     const { quizId } = req.params;
-    const status = await quizzesDao.deleteQuiz(quizId);
-    res.json(status);
-  });
-
-  app.post("/api/quizzes/:quizId/submit", async (req, res) => {
-    const { quizId } = req.params;
-    const studentId = req.session.userId;
-    const attempt = req.body;
-    
-    const result = await quizzesDao.submitQuizAttempt(quizId, studentId, attempt);
+    const result = await quizzesDao.deleteQuiz(quizId);
+    if (!result) {
+      return res.status(404).json({ error: "Quiz not found" });
+    }
     res.json(result);
-  });
+  }));
 
-  app.get("/api/quizzes/:quizId/attempts", async (req, res) => {
+  // 切换发布状态
+  app.patch("/api/quizzes/:quizId/toggle-publish", checkFaculty, handleErrors(async (req, res) => {
     const { quizId } = req.params;
-    const studentId = req.session.userId;
-    const attempts = await quizzesDao.getStudentAttempts(quizId, studentId);
+    const updatedQuiz = await quizzesDao.togglePublishStatus(quizId);
+    res.json(updatedQuiz);
+  }));
+
+  // 提交测验尝试
+  app.post("/api/quizzes/:quizId/attempts", handleErrors(async (req, res) => {
+    const { quizId } = req.params;
+    const { userId } = req.session;
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const quiz = await quizzesDao.findQuizById(quizId);
+    if (!quiz.published) {
+      return res.status(403).json({ error: "Quiz is not published" });
+    }
+
+    const result = await quizzesDao.submitQuizAttempt(quizId, userId, req.body);
+    res.json(result);
+  }));
+
+  // 获取学生的测验尝试记录
+  app.get("/api/quizzes/:quizId/attempts", handleErrors(async (req, res) => {
+    const { quizId } = req.params;
+    const { userId } = req.session;
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const attempts = await quizzesDao.getStudentAttempts(quizId, userId);
     res.json(attempts);
-  });
+  }));
 }
+
+export default QuizRoutes;

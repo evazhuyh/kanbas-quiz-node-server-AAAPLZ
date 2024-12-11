@@ -19,6 +19,19 @@ export default function AssignmentRoutes(app) {
   // Get assignment by ID
   app.get("/api/assignments/:assignmentId", async (req, res) => {
     const { assignmentId } = req.params;
+    
+    // 处理新建作业的情况
+    if (assignmentId === "NewAssignment") {
+      return res.json({
+        title: "",
+        description: "",
+        points: 100,
+        dueDate: new Date().toISOString(),
+        availableFromDate: new Date().toISOString(),
+        availableUntilDate: new Date().toISOString()
+      });
+    }
+    
     const assignment = await dao.findAssignmentById(assignmentId);
     res.json(assignment);
   });

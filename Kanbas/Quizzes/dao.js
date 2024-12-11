@@ -108,3 +108,55 @@ export async function togglePublishStatus(quizId) {
   quiz.published = !quiz.published;
   return quiz.save();
 }
+
+//quiz questions
+/*export async function addQuestionToQuiz(quizId, question) {
+  return model.findByIdAndUpdate(
+    quizId,
+    { $push: { questions: question } },
+    { new: true }
+  );
+}
+
+export async function updateQuizQuestion(quizId, questionId, updates) {
+  return model.findOneAndUpdate(
+    { 
+      _id: quizId,
+      "questions._id": questionId 
+    },
+    { 
+      $set: {
+        "questions.$": { ...updates, _id: questionId }
+      }
+    },
+    { new: true }
+  );
+}
+
+export async function deleteQuizQuestion(quizId, questionId) {
+  return model.findByIdAndUpdate(
+    quizId,
+    { 
+      $pull: { 
+        questions: { _id: questionId }
+      }
+    },
+    { new: true }
+  );
+}
+
+export async function reorderQuizQuestions(quizId, questionIds) {
+  const quiz = await findQuizById(quizId);
+  if (!quiz) {
+    throw new Error("Quiz not found");
+  }
+
+  // 创建新的问题数组，按照提供的顺序重排
+  const reorderedQuestions = questionIds.map(id => 
+    quiz.questions.find(q => q._id.toString() === id)
+  ).filter(Boolean);
+
+  quiz.questions = reorderedQuestions;
+  return quiz.save();
+}
+*/

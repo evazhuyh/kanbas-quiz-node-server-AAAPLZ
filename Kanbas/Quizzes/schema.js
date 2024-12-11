@@ -90,8 +90,8 @@ const schema = new mongoose.Schema(
     },
     accessCode: { 
       type: String, 
-      default: "",
-      required: true 
+      default: null,
+      required: false 
     },
     oneQuestionAtATime: { 
       type: Boolean, 

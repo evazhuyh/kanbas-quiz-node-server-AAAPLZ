@@ -52,8 +52,8 @@ function QuizRoutes(app) {
     res.json(quiz);
   }));
 
-  // 更新测验
-  app.put("/api/quizzes/:quizId", checkFaculty, handleErrors(async (req, res) => {
+  // 更新测验 checkFaculty, 
+  app.put("/api/quizzes/:quizId", handleErrors(async (req, res) => {
     const { quizId } = req.params;
     const updatedQuiz = await quizzesDao.updateQuiz(quizId, req.body);
     if (!updatedQuiz) {
@@ -78,6 +78,37 @@ function QuizRoutes(app) {
     const updatedQuiz = await quizzesDao.togglePublishStatus(quizId);
     res.json(updatedQuiz);
   }));
+
+  /*app.post("/api/quizzes/:quizId/questions", checkFaculty, handleErrors(async (req, res) => {
+    const { quizId } = req.params;
+    const updatedQuiz = await quizzesDao.addQuestionToQuiz(quizId, req.body);
+    res.json(updatedQuiz);
+  }));
+  
+  // 更新题目
+  app.put("/api/quizzes/:quizId/questions/:questionId", checkFaculty, handleErrors(async (req, res) => {
+    const { quizId, questionId } = req.params;
+    const updatedQuiz = await quizzesDao.updateQuizQuestion(quizId, questionId, req.body);
+    if (!updatedQuiz) {
+      return res.status(404).json({ error: "Quiz or question not found" });
+    }
+    res.json(updatedQuiz);
+  }));
+  
+  // 删除题目
+  app.delete("/api/quizzes/:quizId/questions/:questionId", checkFaculty, handleErrors(async (req, res) => {
+    const { quizId, questionId } = req.params;
+    const updatedQuiz = await quizzesDao.deleteQuizQuestion(quizId, questionId);
+    res.json(updatedQuiz);
+  }));
+  
+  // 重新排序题目
+  app.put("/api/quizzes/:quizId/questions/reorder", checkFaculty, handleErrors(async (req, res) => {
+    const { quizId } = req.params;
+    const { questionIds } = req.body;
+    const updatedQuiz = await quizzesDao.reorderQuizQuestions(quizId, questionIds);
+    res.json(updatedQuiz);
+  }));*/
 
   // 提交测验尝试
   app.post("/api/quizzes/:quizId/attempts", handleErrors(async (req, res) => {
